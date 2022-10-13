@@ -57,7 +57,11 @@ async function scan(){
   document.getElementById("camera-container").style.display = "block";
   let svg = document.getElementsByClassName("overlay")[0];
   svg.innerHTML = "";
-  await CameraPreview.start({parent:"camera-container",position:'rear'});
+  await CameraPreview.start({
+    width: 1280,
+    height: 720,
+    parent:"camera-container",
+    position:'rear'});
   if (Capacitor.isNativePlatform() === false) {
     setTimeout(getPreviewSizeToUpdateOverlay,7000); //wait for the camera to open
   }else{
