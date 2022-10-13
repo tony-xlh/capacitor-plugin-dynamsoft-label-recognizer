@@ -1,8 +1,11 @@
 import '../styles/index.scss';
+import { CameraPreview } from "@capacitor-community/camera-preview";
 import { LabelRecognizer  } from "capacitor-plugin-dynamsoft-label-recognizer";
 
 console.log('webpack starterkit');
 document.getElementsByClassName("decode-image-file")[0].addEventListener("change", decodeImage);
+document.getElementsByClassName("scan")[0].addEventListener("click", scan);
+document.getElementsByClassName("capture-button")[0].addEventListener("click", capture);
 
 window.onload = function(){
   LabelRecognizer.init();
@@ -46,4 +49,21 @@ async function recognizeBase64String(base64){
     li.appendChild(pre);
     resultList.appendChild(li);
   }
+}
+
+function scan(){
+  document.getElementById("main").style.display = "none";
+  document.getElementById("camera-container").style.display = "block";
+  CameraPreview.start({parent:"camera-container"});
+}
+
+async function capture(){
+  const result = await CameraPreview.capture({});
+  CameraPreview.stop();
+  console.log(result);
+  document.getElementById("main").style.display = "";
+  document.getElementById("camera-container").style.display = "none";
+  let img = document.getElementsByClassName("img")[0];
+  img.src = "data:image/jpeg;base64,"+result.value;
+  recognizeBase64String(result.value);
 }

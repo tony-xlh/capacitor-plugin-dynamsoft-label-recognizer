@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@capacitor-community/camera-preview": "^4.0.0",
     "capacitor-plugin-dynamsoft-label-recognizer": "file:..",
     "core-js": "^3.20.3"
   }
