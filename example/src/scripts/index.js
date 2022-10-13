@@ -1,5 +1,6 @@
 import '../styles/index.scss';
 import { CameraPreview } from "@capacitor-community/camera-preview";
+import { Capacitor } from '@capacitor/core';
 import { LabelRecognizer  } from "capacitor-plugin-dynamsoft-label-recognizer";
 
 console.log('webpack starterkit');
@@ -55,7 +56,11 @@ async function scan(){
   document.getElementById("main").style.display = "none";
   document.getElementById("camera-container").style.display = "block";
   await CameraPreview.start({parent:"camera-container"});
-  getPreviewSizeToUpdateOverlay();
+  if (Capacitor.isNativePlatform() === false) {
+    setTimeout(getPreviewSizeToUpdateOverlay,7000); //wait for the camera to open
+  }else{
+    getPreviewSizeToUpdateOverlay();
+  }
 }
 
 async function capture(){
