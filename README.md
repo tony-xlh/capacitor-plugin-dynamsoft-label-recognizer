@@ -49,14 +49,14 @@ initLicense(options: { license: string; }) => Promise<void>
 ### recognizeBase64String(...)
 
 ```typescript
-recognizeBase64String(options: { base64: string; }) => Promise<DLRResult[]>
+recognizeBase64String(options: { base64: string; }) => Promise<{ results: DLRResult[]; }>
 ```
 
 | Param         | Type                             |
 | ------------- | -------------------------------- |
 | **`options`** | <code>{ base64: string; }</code> |
 
-**Returns:** <code>Promise&lt;DLRResult[]&gt;</code>
+**Returns:** <code>Promise&lt;{ results: DLRResult[]; }&gt;</code>
 
 --------------------
 
