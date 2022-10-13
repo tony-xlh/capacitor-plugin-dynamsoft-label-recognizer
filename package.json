@@ -74,5 +74,8 @@
     "android": {
       "src": "android"
     }
+  },
+  "dependencies": {
+    "dynamsoft-label-recognizer": "2.2.11"
   }
 }
