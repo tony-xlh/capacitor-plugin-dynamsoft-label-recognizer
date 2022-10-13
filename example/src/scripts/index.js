@@ -55,6 +55,8 @@ async function recognizeBase64String(base64){
 async function scan(){
   document.getElementById("main").style.display = "none";
   document.getElementById("camera-container").style.display = "block";
+  let svg = document.getElementsByClassName("overlay")[0];
+  svg.innerHTML = "";
   await CameraPreview.start({parent:"camera-container"});
   if (Capacitor.isNativePlatform() === false) {
     setTimeout(getPreviewSizeToUpdateOverlay,7000); //wait for the camera to open
@@ -65,13 +67,37 @@ async function scan(){
 
 async function capture(){
   const result = await CameraPreview.capture({});
-  let img = document.getElementsByClassName("img")[0];
-  img.src = "data:image/jpeg;base64,"+result.value;
-  CameraPreview.stop();
-  console.log(result);
-  document.getElementById("main").style.display = "";
-  document.getElementById("camera-container").style.display = "none";
-  recognizeBase64String(result.value);
+  let fullImage = document.createElement("img");
+  fullImage.onload = function(){
+    let cropped = cropImage(fullImage,0.15,0.35,0.70,0.15);
+    let img = document.getElementsByClassName("img")[0];
+    img.src = cropped;
+    console.log(cropped);
+    CameraPreview.stop();
+    document.getElementById("main").style.display = "";
+    document.getElementById("camera-container").style.display = "none";
+    recognizeBase64String(cropped);
+  };
+  fullImage.src = "data:image/jpeg;base64,"+result.value;
+}
+
+function cropImage(img, left, top, width, height){
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  let SX = img.naturalWidth * left;
+  let SY = img.naturalHeight * top;
+  let SWIDTH = img.naturalWidth * width;
+  let SHEIGHT = img.naturalHeight * height;
+  let DX = 0;
+  let DY = 0;
+  let DWIDTH = SWIDTH;
+  let DHEIGHT = SHEIGHT;
+  canvas.width = DWIDTH;
+  canvas.height = DHEIGHT;
+  console.log(canvas.width);
+  console.log(canvas.height);
+  ctx.drawImage(img, SX, SY, SWIDTH, SHEIGHT, DX, DY, DWIDTH, DHEIGHT); 
+  return canvas.toDataURL('image/jpeg');
 }
 
 async function getPreviewSizeToUpdateOverlay(){
