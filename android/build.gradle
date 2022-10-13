@@ -46,6 +46,13 @@ repositories {
     mavenCentral()
 }
 
+rootProject.allprojects {
+  repositories {
+    maven {
+      url "https://download2.dynamsoft.com/maven/aar"
+    }
+  }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -54,4 +61,6 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    // DLR
+    implementation 'com.dynamsoft:dynamsoftlabelrecognizer:2.2.20'
 }
