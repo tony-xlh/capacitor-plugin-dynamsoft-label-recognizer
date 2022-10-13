@@ -51,19 +51,42 @@ async function recognizeBase64String(base64){
   }
 }
 
-function scan(){
+async function scan(){
   document.getElementById("main").style.display = "none";
   document.getElementById("camera-container").style.display = "block";
-  CameraPreview.start({parent:"camera-container"});
+  await CameraPreview.start({parent:"camera-container"});
+  getPreviewSizeToUpdateOverlay();
 }
 
 async function capture(){
   const result = await CameraPreview.capture({});
+  let img = document.getElementsByClassName("img")[0];
+  img.src = "data:image/jpeg;base64,"+result.value;
   CameraPreview.stop();
   console.log(result);
   document.getElementById("main").style.display = "";
   document.getElementById("camera-container").style.display = "none";
+  recognizeBase64String(result.value);
+}
+
+async function getPreviewSizeToUpdateOverlay(){
+  const result = await CameraPreview.capture({});
+  console.log(result);
   let img = document.getElementsByClassName("img")[0];
   img.src = "data:image/jpeg;base64,"+result.value;
-  recognizeBase64String(result.value);
+  img.onload = function (){
+    updateOverlay(img.naturalWidth,img.naturalHeight);
+  };
+}
+
+function updateOverlay(width,height){
+  let svg = document.getElementsByClassName("overlay")[0];
+  svg.innerHTML = "";
+  let rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  rect.setAttribute("x",width*0.15);
+  rect.setAttribute("y",height*0.35);
+  rect.setAttribute("width",width*0.70);
+  rect.setAttribute("height",height*0.15);
+  svg.setAttribute("viewBox","0 0 "+width+" "+height);
+  svg.appendChild(rect);
 }

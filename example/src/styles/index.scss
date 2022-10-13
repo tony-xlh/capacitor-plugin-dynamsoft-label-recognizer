@@ -5,6 +5,11 @@ body {
   font-family: sans-serif;
 }
 
+rect {
+  stroke: red;
+  fill: none;
+}
+
 .capture-button {
   top: 0;
   right: 0;
