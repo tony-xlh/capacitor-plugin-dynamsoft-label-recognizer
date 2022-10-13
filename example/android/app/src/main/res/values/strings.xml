@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">text-scanner</string>
+    <string name="title_activity_main">text-scanner</string>
+    <string name="package_name">com.dynamsoft.textscanner</string>
+    <string name="custom_url_scheme">com.dynamsoft.textscanner</string>
+</resources>
