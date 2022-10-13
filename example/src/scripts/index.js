@@ -33,7 +33,8 @@ function decodeImage(){
 
 async function recognizeBase64String(base64){
   console.log(base64);
-  let results = await LabelRecognizer.recognizeBase64String({base64:base64});
+  let response = await LabelRecognizer.recognizeBase64String({base64:base64});
+  let results = response.results;
   console.log(results);
   let resultList = document.getElementsByClassName("result-list")[0];
   resultList.innerHTML = "";
