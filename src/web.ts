@@ -5,14 +5,24 @@ import type { LabelRecognizerPlugin } from './definitions';
 
 export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlugin {
   private recognizer: LabelRecognizer | null = null;
+  private engineResourcesPath: string = "https://cdn.jsdelivr.net/npm/dynamsoft-label-recognizer@2.2.11/dist/";
+  private license: string = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
   async setEngineResourcesPath(options: { path: string; }): Promise<void> {
-    LabelRecognizer.engineResourcePath = options.path;
+    this.engineResourcesPath = options.path;
   }
+  
   async init(): Promise<void> {
-    this.recognizer = await LabelRecognizer.createInstance();
+    try {
+      LabelRecognizer.license = this.license;
+      LabelRecognizer.engineResourcePath = this.engineResourcesPath;
+      this.recognizer = await LabelRecognizer.createInstance();  
+    } catch (error) {
+      throw error;
+    }
   }
+
   async initLicense(options: { license: string; }): Promise<void> {
-    LabelRecognizer.license = options.license;
+    this.license = options.license;
   }
   async recognizeBase64String(options: { base64: string; }): Promise<DLRResult[]> {
     if (this.recognizer) {
