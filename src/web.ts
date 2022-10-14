@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import { DLRResult, LabelRecognizer } from 'dynamsoft-label-recognizer';
 
-import type { LabelRecognizerPlugin } from './definitions';
+import type { LabelRecognizerPlugin, RuntimeSettings } from './definitions';
 
 export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlugin {
   private recognizer: LabelRecognizer | null = null;
@@ -26,9 +26,9 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     this.license = options.license;
   }
 
-  async updateRuntimeSettingsFromString(options:{template:string}): Promise<void> {
+  async updateRuntimeSettings(options:{settings:RuntimeSettings}): Promise<void> {
     if (this.recognizer) {
-      this.recognizer.updateRuntimeSettingsFromString(options.template);
+      this.recognizer.updateRuntimeSettingsFromString(options.settings.template);
     }
   }
 
