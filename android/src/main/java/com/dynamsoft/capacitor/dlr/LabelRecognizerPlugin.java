@@ -45,12 +45,7 @@ public class LabelRecognizerPlugin extends Plugin {
     @PluginMethod
     public void recognizeBase64String(PluginCall call) {
         String base64 = call.getString("base64");
-        if (base64.contains("data:image/jpeg;base64,")){
-            base64=base64.substring("data:image/jpeg;base64,".length(),base64.length());
-        }
-        if (base64.contains("data:image/png;base64,")){
-            base64=base64.substring("data:image/png;base64,".length(),base64.length());
-        }
+        base64 = base64.replaceFirst("data:.*?;base64,","");
         Log.d("DLR",base64);
         try {
             JSArray results = implementation.recognizeBase64String(base64);
