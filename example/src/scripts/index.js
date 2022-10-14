@@ -11,6 +11,15 @@ document.getElementsByClassName("capture-button")[0].addEventListener("click", c
 window.onload = async function(){
   await LabelRecognizer.initLicense({license:"DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ=="});
   await LabelRecognizer.init();
+  if (Capacitor.isNativePlatform() === false) {
+    LabelRecognizer.addListener('onResourcesLoadStarted', () => {
+      document.getElementById("status").innerText = "Loading resources...";
+    });
+    LabelRecognizer.addListener('onResourcesLoaded', () => {
+      document.getElementById("status").innerText = "";
+    });
+    await LabelRecognizer.updateRuntimeSettingsFromString({template:"MRZ"});
+  }
 };
 
 function decodeImage(){
@@ -33,10 +42,11 @@ function decodeImage(){
 }
 
 async function recognizeBase64String(base64){
-  console.log(base64);
+  document.getElementById("status").innerText = "decoding...";
   let response = await LabelRecognizer.recognizeBase64String({base64:base64});
+  document.getElementById("status").innerText = "";
   let results = response.results;
-  console.log(results);
+  console.log(response);
   let resultList = document.getElementsByClassName("result-list")[0];
   resultList.innerHTML = "";
   for (const result of results) {    

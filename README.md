@@ -16,8 +16,13 @@ npx cap sync
 * [`init()`](#init)
 * [`initLicense(...)`](#initlicense)
 * [`recognizeBase64String(...)`](#recognizebase64string)
+* [`updateRuntimeSettingsFromString(...)`](#updateruntimesettingsfromstring)
 * [`setEngineResourcesPath(...)`](#setengineresourcespath)
+* [`addListener('onResourcesLoadStarted', ...)`](#addlisteneronresourcesloadstarted)
+* [`addListener('onResourcesLoaded', ...)`](#addlisteneronresourcesloaded)
+* [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -61,6 +66,19 @@ recognizeBase64String(options: { base64: string; }) => Promise<{ results: DLRRes
 --------------------
 
 
+### updateRuntimeSettingsFromString(...)
+
+```typescript
+updateRuntimeSettingsFromString(options: { template: string; }) => Promise<void>
+```
+
+| Param         | Type                               |
+| ------------- | ---------------------------------- |
+| **`options`** | <code>{ template: string; }</code> |
+
+--------------------
+
+
 ### setEngineResourcesPath(...)
 
 ```typescript
@@ -70,6 +88,47 @@ setEngineResourcesPath(options: { path: string; }) => Promise<void>
 | Param         | Type                           |
 | ------------- | ------------------------------ |
 | **`options`** | <code>{ path: string; }</code> |
+
+--------------------
+
+
+### addListener('onResourcesLoadStarted', ...)
+
+```typescript
+addListener(eventName: 'onResourcesLoadStarted', listenerFunc: onResourcesLoadStartedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+| Param              | Type                                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'onResourcesLoadStarted'</code>                                                     |
+| **`listenerFunc`** | <code><a href="#onresourcesloadstartedlistener">onResourcesLoadStartedListener</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+
+### addListener('onResourcesLoaded', ...)
+
+```typescript
+addListener(eventName: 'onResourcesLoaded', listenerFunc: onResourcesLoadedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+| Param              | Type                                                                            |
+| ------------------ | ------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'onResourcesLoaded'</code>                                                |
+| **`listenerFunc`** | <code><a href="#onresourcesloadedlistener">onResourcesLoadedListener</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+
+### removeAllListeners()
+
+```typescript
+removeAllListeners() => Promise<void>
+```
 
 --------------------
 
@@ -109,5 +168,25 @@ setEngineResourcesPath(options: { path: string; }) => Promise<void>
 | **`location`**            | <code><a href="#dlrquadrilateral">DLRQuadrilateral</a></code> |
 | **`confidence`**          | <code>number</code>                                           |
 | **`isCheckDigitMatched`** | <code>boolean</code>                                          |
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
+
+
+### Type Aliases
+
+
+#### onResourcesLoadStartedListener
+
+<code>(resourcePath: string): void</code>
+
+
+#### onResourcesLoadedListener
+
+<code>(resourcePath: string): void</code>
 
 </docgen-api>
