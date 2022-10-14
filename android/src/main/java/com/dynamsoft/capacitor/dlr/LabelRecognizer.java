@@ -13,11 +13,8 @@ import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 
 public class LabelRecognizer {
-    private Context mContext;
+
     private com.dynamsoft.dlr.LabelRecognizer recognizer;
-    public LabelRecognizer(Context ctx) {
-        this.mContext = ctx;
-    }
 
     public String echo(String value) {
         Log.i("Echo", value);
@@ -28,8 +25,8 @@ public class LabelRecognizer {
         recognizer = new com.dynamsoft.dlr.LabelRecognizer();
     }
 
-    public void initLicense(String license) {
-        LicenseManager.initLicense(license, mContext, new LicenseVerificationListener() {
+    public void initLicense(String license, Context context) {
+        LicenseManager.initLicense(license, context, new LicenseVerificationListener() {
             @Override
             public void licenseVerificationCallback(boolean isSuccess, CoreException error) {
                 if(!isSuccess){

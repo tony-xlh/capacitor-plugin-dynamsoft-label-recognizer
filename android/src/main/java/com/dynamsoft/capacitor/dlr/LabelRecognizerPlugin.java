@@ -12,7 +12,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "LabelRecognizer")
 public class LabelRecognizerPlugin extends Plugin {
 
-    private LabelRecognizer implementation = new LabelRecognizer(getContext());
+    private LabelRecognizer implementation = new LabelRecognizer();
 
     @PluginMethod
     public void echo(PluginCall call) {
@@ -25,7 +25,7 @@ public class LabelRecognizerPlugin extends Plugin {
     @PluginMethod
     public void initLicense(PluginCall call) {
         String license = call.getString("license");
-        implementation.initLicense(license);
+        implementation.initLicense(license,getContext());
         call.resolve();
     }
 
