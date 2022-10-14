@@ -60,8 +60,6 @@ async function scan(){
   let svg = document.getElementsByClassName("overlay")[0];
   svg.innerHTML = "";
   await CameraPreview.start({
-    width: 1280,
-    height: 720,
     toBack: true,
     parent:"camera-container",
     position:'rear'});
