@@ -11,6 +11,9 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 @CapacitorPlugin(name = "LabelRecognizer")
 public class LabelRecognizerPlugin extends Plugin {
 
@@ -56,6 +59,26 @@ public class LabelRecognizerPlugin extends Plugin {
             e.printStackTrace();
             call.reject(e.getMessage());
         }
+    }
 
+    @PluginMethod
+    public void updateRuntimeSettings(PluginCall call) {
+        String template = call.getString("template");
+        try {
+            implementation.updateRuntimeSettings(template);
+        } catch (LabelRecognizerException e) {
+            e.printStackTrace();
+        }
+        if (call.hasOption("customModelConfig")) {
+            JSObject config = call.getObject("customModelConfig");
+            String modelFolder = config.getString("customModelFolder");
+            try {
+                JSONArray fileNames = config.getJSONArray("customModelFileNames");
+                implementation.loadCustomModel(getContext(), modelFolder, fileNames);
+            } catch (JSONException | LabelRecognizerException e) {
+                e.printStackTrace();
+            }
+        }
+        call.resolve();
     }
 }

@@ -16,7 +16,7 @@ npx cap sync
 * [`init()`](#init)
 * [`initLicense(...)`](#initlicense)
 * [`recognizeBase64String(...)`](#recognizebase64string)
-* [`updateRuntimeSettingsFromString(...)`](#updateruntimesettingsfromstring)
+* [`updateRuntimeSettings(...)`](#updateruntimesettings)
 * [`setEngineResourcesPath(...)`](#setengineresourcespath)
 * [`addListener('onResourcesLoadStarted', ...)`](#addlisteneronresourcesloadstarted)
 * [`addListener('onResourcesLoaded', ...)`](#addlisteneronresourcesloaded)
@@ -66,15 +66,15 @@ recognizeBase64String(options: { base64: string; }) => Promise<{ results: DLRRes
 --------------------
 
 
-### updateRuntimeSettingsFromString(...)
+### updateRuntimeSettings(...)
 
 ```typescript
-updateRuntimeSettingsFromString(options: { template: string; }) => Promise<void>
+updateRuntimeSettings(options: { settings: RuntimeSettings; }) => Promise<void>
 ```
 
-| Param         | Type                               |
-| ------------- | ---------------------------------- |
-| **`options`** | <code>{ template: string; }</code> |
+| Param         | Type                                                                       |
+| ------------- | -------------------------------------------------------------------------- |
+| **`options`** | <code>{ settings: <a href="#runtimesettings">RuntimeSettings</a>; }</code> |
 
 --------------------
 
@@ -168,6 +168,22 @@ removeAllListeners() => Promise<void>
 | **`location`**            | <code><a href="#dlrquadrilateral">DLRQuadrilateral</a></code> |
 | **`confidence`**          | <code>number</code>                                           |
 | **`isCheckDigitMatched`** | <code>boolean</code>                                          |
+
+
+#### RuntimeSettings
+
+| Prop                    | Type                                                            |
+| ----------------------- | --------------------------------------------------------------- |
+| **`template`**          | <code>string</code>                                             |
+| **`customModelConfig`** | <code><a href="#custommodelconfig">CustomModelConfig</a></code> |
+
+
+#### CustomModelConfig
+
+| Prop                       | Type                  |
+| -------------------------- | --------------------- |
+| **`customModelFolder`**    | <code>string</code>   |
+| **`customModelFileNames`** | <code>string[]</code> |
 
 
 #### PluginListenerHandle
