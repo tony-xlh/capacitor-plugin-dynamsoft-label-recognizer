@@ -63,14 +63,15 @@ public class LabelRecognizerPlugin extends Plugin {
 
     @PluginMethod
     public void updateRuntimeSettings(PluginCall call) {
-        String template = call.getString("template");
+        JSObject settings = call.getObject("settings");
+        String template = settings.getString("template");
         try {
             implementation.updateRuntimeSettings(template);
         } catch (LabelRecognizerException e) {
             e.printStackTrace();
         }
         if (call.hasOption("customModelConfig")) {
-            JSObject config = call.getObject("customModelConfig");
+            JSObject config = settings.getJSObject("customModelConfig");
             String modelFolder = config.getString("customModelFolder");
             try {
                 JSONArray fileNames = config.getJSONArray("customModelFileNames");
