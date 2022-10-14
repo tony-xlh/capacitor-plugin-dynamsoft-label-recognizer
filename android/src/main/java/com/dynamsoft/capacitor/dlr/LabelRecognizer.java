@@ -58,6 +58,7 @@ public class LabelRecognizer {
     }
 
     public void loadCustomModel(Context ctx, String modelFolder, JSONArray fileNames) throws LabelRecognizerException {
+        Log.d("DLR","model folder: "+modelFolder);
         try {
             for(int i = 0;i<fileNames.length();i++) {
                 Log.d("DLR","filename: "+fileNames.get(i));

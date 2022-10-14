@@ -70,7 +70,7 @@ public class LabelRecognizerPlugin extends Plugin {
         } catch (LabelRecognizerException e) {
             e.printStackTrace();
         }
-        if (call.hasOption("customModelConfig")) {
+        if (settings.has("customModelConfig")) {
             JSObject config = settings.getJSObject("customModelConfig");
             String modelFolder = config.getString("customModelFolder");
             try {

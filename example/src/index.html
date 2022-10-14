@@ -9,10 +9,17 @@
 <body>
   <div id="main">
     <h1>Dynamsoft Label Recognizer example</h1>
-    Recognize an image:
+    Use case: 
+    <select>
+      <option>General</option>
+      <option>MRZ</option>
+    </select>
+    <br/>
+    <p>Load an image and recognize:</p>
     <input type="file" class="decode-image-file" accept=".jpg,.jpeg,.png,.bmp" />
     <br/>
-    <button class="scan">Scan</button>
+    <p>Capture from the camera and recognize: </p>
+    <button class="start-camera">Start Camera</button>
     <div id="status"></div>
     <br/>
     <img class="img"/>
