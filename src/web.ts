@@ -15,6 +15,7 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     try {
       LabelRecognizer.license = this.license;
       LabelRecognizer.engineResourcePath = this.engineResourcesPath;
+      this.setupEvents();
       this.recognizer = await LabelRecognizer.createInstance();  
     } catch (error) {
       throw error;
@@ -31,5 +32,18 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     }else{
       throw new Error("Not initialized");
     }
+  }
+
+  setupEvents() {
+    LabelRecognizer.onResourcesLoadStarted = (resourcePath) => {
+        // In this event handler, you can display a visual cue to show that the model file is being downloaded.
+        console.log("Loading " + resourcePath);
+        this.notifyListeners("onPlayed",resourcePath);
+    };
+    LabelRecognizer.onResourcesLoaded = (resourcePath) => {
+        // In this event handler, you can close the visual cue if it was displayed.
+        console.log("Finished loading " + resourcePath);
+        this.notifyListeners("onResourcesLoaded", resourcePath);
+    };
   }
 }
