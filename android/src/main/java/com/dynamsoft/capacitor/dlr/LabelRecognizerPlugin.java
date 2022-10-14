@@ -1,5 +1,7 @@
 package com.dynamsoft.capacitor.dlr;
 
+import android.util.Log;
+
 import com.dynamsoft.dlr.DLRResult;
 import com.dynamsoft.dlr.LabelRecognizerException;
 import com.getcapacitor.JSArray;
@@ -43,6 +45,10 @@ public class LabelRecognizerPlugin extends Plugin {
     @PluginMethod
     public void recognizeBase64String(PluginCall call) {
         String base64 = call.getString("base64");
+        if (base64.contains("data:image/jpeg;base64,")){
+            base64=base64.substring("data:image/jpeg;base64,".length(),base64.length());
+        }
+        Log.d("DLR",base64);
         try {
             JSArray results = implementation.recognizeBase64String(base64);
             JSObject response = new JSObject();

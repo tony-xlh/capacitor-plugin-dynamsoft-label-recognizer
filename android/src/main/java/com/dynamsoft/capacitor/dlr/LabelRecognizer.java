@@ -26,6 +26,7 @@ public class LabelRecognizer {
     }
 
     public void initLicense(String license, Context context) {
+        Log.d("DLR",license);
         LicenseManager.initLicense(license, context, new LicenseVerificationListener() {
             @Override
             public void licenseVerificationCallback(boolean isSuccess, CoreException error) {

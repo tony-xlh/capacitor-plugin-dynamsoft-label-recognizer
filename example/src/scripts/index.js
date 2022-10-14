@@ -62,6 +62,7 @@ async function scan(){
   await CameraPreview.start({
     width: 1280,
     height: 720,
+    toBack: true,
     parent:"camera-container",
     position:'rear'});
   if (Capacitor.isNativePlatform() === false) {
