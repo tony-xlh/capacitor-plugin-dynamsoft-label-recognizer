@@ -8,9 +8,9 @@ document.getElementsByClassName("decode-image-file")[0].addEventListener("change
 document.getElementsByClassName("scan")[0].addEventListener("click", scan);
 document.getElementsByClassName("capture-button")[0].addEventListener("click", capture);
 
-window.onload = function(){
-  LabelRecognizer.initLicense("DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==");
-  LabelRecognizer.init();
+window.onload = async function(){
+  await LabelRecognizer.initLicense({license:"DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ=="});
+  await LabelRecognizer.init();
 };
 
 function decodeImage(){
@@ -72,7 +72,7 @@ async function scan(){
 }
 
 async function capture(){
-  const result = await CameraPreview.capture({});
+  const result = await CameraPreview.captureSample({});
   let fullImage = document.createElement("img");
   fullImage.onload = function(){
     let cropped = cropImage(fullImage,0.15,0.35,0.70,0.15);
