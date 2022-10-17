@@ -9,8 +9,8 @@ document.getElementsByClassName("start-camera")[0].addEventListener("click", sta
 document.getElementsByClassName("capture-button")[0].addEventListener("click", capture);
 document.getElementsByClassName("use-case")[0].addEventListener("change", changeUseCase);
 
-const leftPercent = 0.05;
-const widthPercent = 0.95;
+const leftPercent = 0.0;
+const widthPercent = 1.0;
 const topPercent = 0.35;
 const heightPercent = 0.15;
 
