@@ -9,6 +9,11 @@ document.getElementsByClassName("start-camera")[0].addEventListener("click", sta
 document.getElementsByClassName("capture-button")[0].addEventListener("click", capture);
 document.getElementsByClassName("use-case")[0].addEventListener("change", changeUseCase);
 
+const leftPercent = 0.05;
+const widthPercent = 0.95;
+const topPercent = 0.35;
+const heightPercent = 0.15;
+
 window.onload = async function(){
   let privateTrial;
   if (Capacitor.isNativePlatform()) {
@@ -97,7 +102,7 @@ async function capture(){
   const result = await CameraPreview.captureSample({});
   let fullImage = document.createElement("img");
   fullImage.onload = function(){
-    let cropped = cropImage(fullImage,0.15,0.35,0.70,0.15);
+    let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
     let img = document.getElementsByClassName("img")[0];
     img.src = cropped;
     console.log(cropped);
@@ -142,10 +147,10 @@ function updateOverlay(width,height){
   let svg = document.getElementsByClassName("overlay")[0];
   svg.innerHTML = "";
   let rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-  rect.setAttribute("x",width*0.15);
-  rect.setAttribute("y",height*0.35);
-  rect.setAttribute("width",width*0.70);
-  rect.setAttribute("height",height*0.15);
+  rect.setAttribute("x",width*leftPercent);
+  rect.setAttribute("y",height*topPercent);
+  rect.setAttribute("width",width*widthPercent);
+  rect.setAttribute("height",height*heightPercent);
   svg.setAttribute("viewBox","0 0 "+width+" "+height);
   svg.appendChild(rect);
 }
