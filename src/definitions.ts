@@ -2,7 +2,7 @@ import { PluginListenerHandle } from "@capacitor/core";
 import { DLRResult } from "dynamsoft-label-recognizer";
 
 export interface LabelRecognizerPlugin {
-  init(): Promise<void>;
+  initialize(): Promise<void>;
   initLicense(options: { license: string }): Promise<void>;
   recognizeBase64String(options: { base64: string }): Promise<{results:DLRResult[]}>;
   updateRuntimeSettings(options: {settings:RuntimeSettings}): Promise<void>;

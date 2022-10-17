@@ -11,7 +11,7 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     this.engineResourcesPath = options.path;
   }
   
-  async init(): Promise<void> {
+  async initialize(): Promise<void> {
     try {
       LabelRecognizer.license = this.license;
       LabelRecognizer.engineResourcePath = this.engineResourcesPath;

@@ -35,7 +35,7 @@ public class LabelRecognizerPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void init(PluginCall call) {
+    public void initialize(PluginCall call) {
         try {
             implementation.initDLR();
             call.resolve();

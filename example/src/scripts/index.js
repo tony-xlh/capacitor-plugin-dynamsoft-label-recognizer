@@ -18,7 +18,7 @@ window.onload = async function(){
   }
   //let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
   await LabelRecognizer.initLicense({license:privateTrial});
-  await LabelRecognizer.init();
+  await LabelRecognizer.initialize();
   if (Capacitor.isNativePlatform() === false) {
     LabelRecognizer.addListener('onResourcesLoadStarted', () => {
       document.getElementById("status").innerText = "Loading resources...";
