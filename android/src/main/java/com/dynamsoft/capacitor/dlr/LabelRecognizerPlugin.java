@@ -82,4 +82,15 @@ public class LabelRecognizerPlugin extends Plugin {
         }
         call.resolve();
     }
+
+    @PluginMethod
+    public void resetRuntimeSettings(PluginCall call) {
+        try {
+            implementation.resetRuntimeSettings();
+            call.resolve();
+        } catch (LabelRecognizerException e) {
+            e.printStackTrace();
+            call.reject(e.getMessage());
+        }
+    }
 }

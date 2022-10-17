@@ -53,8 +53,11 @@ public class LabelRecognizer {
     }
 
     public void updateRuntimeSettings(String template) throws LabelRecognizerException {
-        Log.d("DLR",template);
         recognizer.initRuntimeSettings(template);
+    }
+
+    public void resetRuntimeSettings() throws LabelRecognizerException {
+        recognizer.resetRuntimeSettings();
     }
 
     public void loadCustomModel(Context ctx, String modelFolder, JSONArray fileNames) throws LabelRecognizerException {
