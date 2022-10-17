@@ -17,6 +17,7 @@ npx cap sync
 * [`initLicense(...)`](#initlicense)
 * [`recognizeBase64String(...)`](#recognizebase64string)
 * [`updateRuntimeSettings(...)`](#updateruntimesettings)
+* [`resetRuntimeSettings()`](#resetruntimesettings)
 * [`setEngineResourcesPath(...)`](#setengineresourcespath)
 * [`addListener('onResourcesLoadStarted', ...)`](#addlisteneronresourcesloadstarted)
 * [`addListener('onResourcesLoaded', ...)`](#addlisteneronresourcesloaded)
@@ -75,6 +76,15 @@ updateRuntimeSettings(options: { settings: RuntimeSettings; }) => Promise<void>
 | Param         | Type                                                                       |
 | ------------- | -------------------------------------------------------------------------- |
 | **`options`** | <code>{ settings: <a href="#runtimesettings">RuntimeSettings</a>; }</code> |
+
+--------------------
+
+
+### resetRuntimeSettings()
+
+```typescript
+resetRuntimeSettings() => Promise<void>
+```
 
 --------------------
 

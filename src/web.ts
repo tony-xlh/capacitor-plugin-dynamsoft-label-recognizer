@@ -32,6 +32,12 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     }
   }
 
+  async resetRuntimeSettings(): Promise<void> {
+    if (this.recognizer) {
+      await this.recognizer.resetRuntimeSettings();
+    }
+  }
+
   async recognizeBase64String(options: { base64: string; }): Promise<{results:DLRResult[]}> {
     if (this.recognizer) {
       console.log(options.base64);

@@ -6,6 +6,7 @@ export interface LabelRecognizerPlugin {
   initLicense(options: { license: string }): Promise<void>;
   recognizeBase64String(options: { base64: string }): Promise<{results:DLRResult[]}>;
   updateRuntimeSettings(options: {settings:RuntimeSettings}): Promise<void>;
+  resetRuntimeSettings(): Promise<void>;
   setEngineResourcesPath(options: { path: string }): Promise<void>;
   addListener(
     eventName: 'onResourcesLoadStarted',
