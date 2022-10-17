@@ -12,6 +12,7 @@ rect {
 
 .capture-button {
   top: 0;
+  top: env(safe-area-inset-top);
   right: 0;
   position: absolute;
   z-index: 999;
