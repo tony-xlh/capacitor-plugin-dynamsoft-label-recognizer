@@ -47,10 +47,11 @@ public class LabelRecognizerPlugin: CAPPlugin  {
     }
     
     @objc func updateRuntimeSettings(_ call: CAPPluginCall) {
-        let template = call.getString("template") ?? ""
+        let settings = call.getAny("settings") as? [String:Any]
+        let template = settings!["template"] as! String
         implementation.updateRuntimeSettings(template)
         
-        guard let customModelConfig = call.getAny("customModelConfig") as? [String:Any] else {
+        guard let customModelConfig = settings!["customModelConfig"] as? [String:Any] else {
             call.resolve()
             return
         }
