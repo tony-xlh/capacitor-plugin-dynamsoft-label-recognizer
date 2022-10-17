@@ -28,8 +28,22 @@ public class LabelRecognizerPlugin: CAPPlugin  {
     }
     
     @objc func recognizeBase64String(_ call: CAPPluginCall) {
-        let base64 = call.getString("base64") ?? ""
+        var base64 = call.getString("base64") ?? ""
+        base64 = removeDataURLHead(base64)
         call.resolve(["results":implementation.recognizeBase64String(base64)])
+    }
+    
+    func removeDataURLHead(_ str: String) -> String {
+        var finalStr = str
+        do {
+            let pattern = "data:.*?;base64,"
+            let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
+            finalStr = regex.stringByReplacingMatches(in: str, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, str.count), withTemplate: "")
+        }
+        catch {
+            print(error)
+        }
+        return finalStr
     }
     
     @objc func updateRuntimeSettings(_ call: CAPPluginCall) {

@@ -24,9 +24,12 @@ import DynamsoftLabelRecognizer
     
     @objc public func recognizeBase64String(_ base64: String) -> [Any] {
         var returned_results: [Any] = []
+        print(base64)
         let image = Utils.convertBase64ToImage(base64)
         if image != nil {
             let results = try? recognizer.recognizeImage(image!)
+            print("count:")
+            print(results?.count)
             for result in results! {
                 returned_results.append(Utils.wrapDLRResult(result:result))
             }
