@@ -15,4 +15,39 @@ public class LabelRecognizerPlugin: CAPPlugin {
             "value": implementation.echo(value)
         ])
     }
+    
+    @objc func initialize(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.resolve([
+            "value": implementation.echo(value)
+        ])
+    }
+    
+    @objc func initLicense(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.resolve([
+            "value": implementation.echo(value)
+        ])
+    }
+    
+    @objc func recognizeBase64String(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.resolve([
+            "value": implementation.echo(value)
+        ])
+    }
+    
+    @objc func updateRuntimeSettings(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.resolve([
+            "value": implementation.echo(value)
+        ])
+    }
+    
+    @objc func resetRuntimeSettings(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.resolve([
+            "value": implementation.echo(value)
+        ])
+    }
 }
