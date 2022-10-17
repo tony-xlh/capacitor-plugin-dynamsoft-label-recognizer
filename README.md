@@ -1,6 +1,6 @@
 # capacitor-plugin-dynamsoft-label-recognizer
 
-Capacitor plugin of Dynamsoft Label Recognizer which brings text recognition ability to your apps.
+Capacitor plugin of [Dynamsoft Label Recognizer](https://www.dynamsoft.com/label-recognition/overview/) which brings text recognition ability to your apps.
 
 ## Install
 
