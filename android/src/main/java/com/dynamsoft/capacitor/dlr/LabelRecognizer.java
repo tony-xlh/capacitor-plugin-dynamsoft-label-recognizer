@@ -24,11 +24,11 @@ public class LabelRecognizer {
     public String echo(String value) {
         Log.i("Echo", value);
         return value;
-    }
-
-    public void initDLR() throws LabelRecognizerException {
+    }public void initDLR() throws LabelRecognizerException {
         recognizer = new com.dynamsoft.dlr.LabelRecognizer();
     }
+
+
 
     public void initLicense(String license, Context context) {
         Log.d("DLR",license);

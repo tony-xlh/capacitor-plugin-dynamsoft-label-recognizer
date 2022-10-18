@@ -57,7 +57,7 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     LabelRecognizer.onResourcesLoadStarted = (resourcePath) => {
         // In this event handler, you can display a visual cue to show that the model file is being downloaded.
         console.log("Loading " + resourcePath);
-        this.notifyListeners("onPlayed",resourcePath);
+        this.notifyListeners("onResourcesLoadStarted",resourcePath);
     };
     LabelRecognizer.onResourcesLoaded = (resourcePath) => {
         // In this event handler, you can close the visual cue if it was displayed.
