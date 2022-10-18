@@ -21,6 +21,7 @@ window.onload = async function(){
   //}else{
   //  privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbFhaV0pRY205cVgyUnNjZyIsIm9yZ2FuaXphdGlvbklEIjoiMTAwMjI3NzYzIiwiY2hlY2tDb2RlIjotNTI2ODU2NjYxfQ==";
   //}
+  document.getElementById("main").style.display = "none";
   let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
   await LabelRecognizer.initLicense({license:publicTrial});
   await LabelRecognizer.initialize();
@@ -32,6 +33,8 @@ window.onload = async function(){
       document.getElementById("status").innerText = "";
     });
   }
+  document.getElementById("main").style.display = "";
+  document.getElementById("initilization-status").style.display = "none";
 };
 
 function decodeImage(){
