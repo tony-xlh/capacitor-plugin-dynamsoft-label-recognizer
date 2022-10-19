@@ -181,7 +181,7 @@ async function capture(){
   let fullImage = document.createElement("img");
   fullImage.onload = async function(){
     let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
-    let img = document.getElementsByClassName("img")[0];
+    let img = document.getElementsByClassName("targetImg")[0];
     img.src = cropped;
     console.log(cropped);
     CameraPreview.stop();
