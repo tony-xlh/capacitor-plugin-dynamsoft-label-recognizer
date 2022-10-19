@@ -16,6 +16,21 @@ const heightPercent = 0.15;
 let interval;
 let decoding = false;
 
+let correctButton = document.getElementById("correctButton");
+correctButton.onclick = function(){
+  var modal = document.getElementById("modal");
+  modal.className = modal.className.replace("active", "");
+  stopWithLiveScanResults();
+};
+
+let rescanButton = document.getElementById("rescanButton");
+rescanButton.onclick = function(){
+  var modal = document.getElementById("modal");
+  modal.className = modal.className.replace("active", "");
+  startLiveScan();
+};
+
+
 window.onload = async function(){
   let privateTrial;
   if (Capacitor.isNativePlatform()) {
@@ -67,7 +82,11 @@ async function recognizeBase64String(base64){
   return results;
 }
 
-function displayResults(results){
+function displayResults(results, cropped){
+  if (cropped) {
+    let img = document.getElementsByClassName("targetImg")[0];
+    img.src = cropped;
+  }
   let resultList = document.getElementsByClassName("result-list")[0];
   resultList.innerHTML = "";
   for (const result of results) {    
@@ -130,18 +149,32 @@ async function liveScan(){
     let results = await recognizeBase64String(cropped);
     if (results.length>0) {
       stopLiveScan();
-      displayResults(results);
-      CameraPreview.stop();
-      let img = document.getElementsByClassName("targetImg")[0];
-      img.src = cropped;
-      document.getElementById("main").style.display = "";
-      document.getElementById("camera-container").style.display = "none";
+      displayResults(results, cropped);
+      displayConfirmationModal(results);
     }
     decoding = false;
   };
   decoding = true;
   fullImage.src = "data:image/jpeg;base64,"+result.value;
 }
+
+function displayConfirmationModal(results){
+  let text = "";
+  for (let result of results) {
+    for (let lineResult of result.lineResults) {
+      text = text + lineResult.text + "\n";
+    }
+  }
+  document.getElementById("result").innerText = text;
+  document.getElementById("modal").className += " active";
+}
+
+function stopWithLiveScanResults(){
+  CameraPreview.stop();
+  document.getElementById("main").style.display = "";
+  document.getElementById("camera-container").style.display = "none";
+}
+
 
 async function capture(){
   const result = await CameraPreview.captureSample({});
@@ -154,8 +187,8 @@ async function capture(){
     CameraPreview.stop();
     document.getElementById("main").style.display = "";
     document.getElementById("camera-container").style.display = "none";
-    let results = await (cropped);
-    displayResults(results);
+    let results = await recognizeBase64String(cropped);
+    displayResults(results,cropped);
   };
   fullImage.src = "data:image/jpeg;base64,"+result.value;
 }
@@ -186,6 +219,7 @@ async function getPreviewSizeToUpdateOverlay(){
   img.src = "data:image/jpeg;base64,"+result.value;
   img.onload = function (){
     updateOverlay(img.naturalWidth,img.naturalHeight);
+    img.onload = undefined;
   };
 }
 
