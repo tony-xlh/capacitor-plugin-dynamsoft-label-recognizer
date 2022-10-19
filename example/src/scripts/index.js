@@ -13,17 +13,18 @@ const leftPercent = 0.0;
 const widthPercent = 1.0;
 const topPercent = 0.35;
 const heightPercent = 0.15;
+let interval;
 
 window.onload = async function(){
-  //let privateTrial;
-  //if (Capacitor.isNativePlatform()) {
-  //  privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbE5iMkpwYkdWUWNtOXFYMlJzY2ciLCJvcmdhbml6YXRpb25JRCI6IjEwMDIyNzc2MyIsImNoZWNrQ29kZSI6LTE4MDg2NTM3MjV9";
-  //}else{
-  //  privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbFhaV0pRY205cVgyUnNjZyIsIm9yZ2FuaXphdGlvbklEIjoiMTAwMjI3NzYzIiwiY2hlY2tDb2RlIjotNTI2ODU2NjYxfQ==";
-  //}
+  let privateTrial;
+  if (Capacitor.isNativePlatform()) {
+    privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbE5iMkpwYkdWUWNtOXFYMlJzY2ciLCJvcmdhbml6YXRpb25JRCI6IjEwMDIyNzc2MyIsImNoZWNrQ29kZSI6LTE4MDg2NTM3MjV9";
+  }else{
+    privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbFhaV0pRY205cVgyUnNjZyIsIm9yZ2FuaXphdGlvbklEIjoiMTAwMjI3NzYzIiwiY2hlY2tDb2RlIjotNTI2ODU2NjYxfQ==";
+  }
   document.getElementById("main").style.display = "none";
-  let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
-  await LabelRecognizer.initLicense({license:publicTrial});
+  //let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
+  await LabelRecognizer.initLicense({license:privateTrial});
   await LabelRecognizer.initialize();
   if (Capacitor.isNativePlatform() === false) {
     LabelRecognizer.addListener('onResourcesLoadStarted', () => {
@@ -42,13 +43,14 @@ function decodeImage(){
   if (files.length == 0) {
     return;
   }
-  let img = document.getElementsByClassName("img")[0];
+  let img = document.getElementsByClassName("targetImg")[0];
   img.src = "";
   let file = files[0];
   let fileReader = new FileReader();
-  fileReader.onload = function(e){
+  fileReader.onload = async function(e){
     img.src = e.target.result;
-    recognizeBase64String(e.target.result);
+    let results = await recognizeBase64String(e.target.result);
+    displayResults(results);
   };
   fileReader.onerror = function () {
     console.warn('oops, something went wrong.');
@@ -61,7 +63,10 @@ async function recognizeBase64String(base64){
   let response = await LabelRecognizer.recognizeBase64String({base64:base64});
   document.getElementById("status").innerText = "";
   let results = response.results;
-  console.log(response);
+  return results;
+}
+
+function displayResults(results){
   let resultList = document.getElementsByClassName("result-list")[0];
   resultList.innerHTML = "";
   for (const result of results) {    
@@ -99,12 +104,42 @@ async function startCamera(){
   }else{
     getPreviewSizeToUpdateOverlay();
   }
+  if (document.getElementById("livemode").checked) {
+    startLiveScan();
+  }
+}
+
+function startLiveScan(){
+  interval = setInterval(liveScan,500);
+}
+
+function stopLiveScan(){
+  clearInterval(interval);
+}
+
+async function liveScan(){
+  const result = await CameraPreview.captureSample({});
+  let fullImage = document.createElement("img");
+  fullImage.onload = async function(){
+    let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
+    let results = await recognizeBase64String(cropped);
+    if (results.length>0) {
+      stopLiveScan();
+      displayResults(results);
+      CameraPreview.stop();
+      let img = document.getElementsByClassName("targetImg")[0];
+      img.src = cropped;
+      document.getElementById("main").style.display = "";
+      document.getElementById("camera-container").style.display = "none";
+    }
+  };
+  fullImage.src = "data:image/jpeg;base64,"+result.value;
 }
 
 async function capture(){
   const result = await CameraPreview.captureSample({});
   let fullImage = document.createElement("img");
-  fullImage.onload = function(){
+  fullImage.onload = async function(){
     let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
     let img = document.getElementsByClassName("img")[0];
     img.src = cropped;
@@ -112,7 +147,8 @@ async function capture(){
     CameraPreview.stop();
     document.getElementById("main").style.display = "";
     document.getElementById("camera-container").style.display = "none";
-    recognizeBase64String(cropped);
+    let results = await (cropped);
+    displayResults(results);
   };
   fullImage.src = "data:image/jpeg;base64,"+result.value;
 }
@@ -139,7 +175,7 @@ function cropImage(img, left, top, width, height){
 async function getPreviewSizeToUpdateOverlay(){
   const result = await CameraPreview.capture({});
   console.log(result);
-  let img = document.getElementsByClassName("img")[0];
+  let img = document.getElementsByClassName("targetImg")[0];
   img.src = "data:image/jpeg;base64,"+result.value;
   img.onload = function (){
     updateOverlay(img.naturalWidth,img.naturalHeight);
