@@ -9,6 +9,10 @@ npm install capacitor-plugin-dynamsoft-label-recognizer
 npx cap sync
 ```
 
+## Demo
+
+[Vanilla JS example](https://github.com/tony-xlh/capacitor-plugin-dynamsoft-label-recognizer/tree/main/example)
+
 ## API
 
 <docgen-index>
