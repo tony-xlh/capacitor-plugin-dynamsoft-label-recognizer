@@ -32,15 +32,15 @@ rescanButton.onclick = function(){
 
 
 window.onload = async function(){
-  //let privateTrial;
-  //if (Capacitor.isNativePlatform()) {
-  //  privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbE5iMkpwYkdWUWNtOXFYMlJzY2ciLCJvcmdhbml6YXRpb25JRCI6IjEwMDIyNzc2MyIsImNoZWNrQ29kZSI6LTE4MDg2NTM3MjV9";
-  //}else{
-  //  privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbFhaV0pRY205cVgyUnNjZyIsIm9yZ2FuaXphdGlvbklEIjoiMTAwMjI3NzYzIiwiY2hlY2tDb2RlIjotNTI2ODU2NjYxfQ==";
-  //}
+  let privateTrial;
+  if (Capacitor.isNativePlatform()) {
+    privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbE5iMkpwYkdWUWNtOXFYMlJzY2ciLCJvcmdhbml6YXRpb25JRCI6IjEwMDIyNzc2MyIsImNoZWNrQ29kZSI6LTE4MDg2NTM3MjV9";
+  }else{
+    privateTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAwMjI3NzYzLVRYbFhaV0pRY205cVgyUnNjZyIsIm9yZ2FuaXphdGlvbklEIjoiMTAwMjI3NzYzIiwiY2hlY2tDb2RlIjotNTI2ODU2NjYxfQ==";
+  }
   document.getElementById("main").style.display = "none";
-  let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
-  await LabelRecognizer.initLicense({license:publicTrial});
+  //let publicTrial = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
+  await LabelRecognizer.initLicense({license:privateTrial});
   await LabelRecognizer.initialize();
   if (Capacitor.isNativePlatform() === false) {
     LabelRecognizer.addListener('onResourcesLoadStarted', () => {
@@ -119,11 +119,7 @@ async function startCamera(){
     options.height = 720;
   }
   await CameraPreview.start(options);
-  if (Capacitor.isNativePlatform() === false) {
-    setTimeout(getPreviewSizeToUpdateOverlay,7000); //wait for the camera to open
-  }else{
-    getPreviewSizeToUpdateOverlay();
-  }
+  setTimeout(getPreviewSizeToUpdateOverlay,3000); //wait for the camera to open
   if (document.getElementById("livemode").checked) {
     startLiveScan();
   }
@@ -140,6 +136,9 @@ function stopLiveScan(){
 
 async function liveScan(){
   if (decoding === true) {
+    return;
+  }
+  if (document.getElementById("modal").className.indexOf("active") != -1) {
     return;
   }
   const result = await CameraPreview.captureSample({});
@@ -213,14 +212,12 @@ function cropImage(img, left, top, width, height){
 }
 
 async function getPreviewSizeToUpdateOverlay(){
-  const result = await CameraPreview.capture({});
-  console.log(result);
-  let img = document.getElementsByClassName("targetImg")[0];
-  img.src = "data:image/jpeg;base64,"+result.value;
+  const result = await CameraPreview.captureSample({});
+  let img = document.createElement("img");
   img.onload = function (){
     updateOverlay(img.naturalWidth,img.naturalHeight);
-    img.onload = undefined;
   };
+  img.src = "data:image/jpeg;base64,"+result.value;
 }
 
 function updateOverlay(width,height){
