@@ -121,7 +121,7 @@ async function startCamera(){
   await CameraPreview.start(options);
   setTimeout(getPreviewSizeToUpdateOverlay,3000); //wait for the camera to open
   if (document.getElementById("livemode").checked) {
-    startLiveScan();
+    setTimeout(startLiveScan,3000);
   }
 }
 
