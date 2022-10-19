@@ -14,6 +14,7 @@ const widthPercent = 1.0;
 const topPercent = 0.35;
 const heightPercent = 0.15;
 let interval;
+let decoding = false;
 
 window.onload = async function(){
   let privateTrial;
@@ -110,6 +111,7 @@ async function startCamera(){
 }
 
 function startLiveScan(){
+  decoding = false;
   interval = setInterval(liveScan,500);
 }
 
@@ -118,6 +120,9 @@ function stopLiveScan(){
 }
 
 async function liveScan(){
+  if (decoding === true) {
+    return;
+  }
   const result = await CameraPreview.captureSample({});
   let fullImage = document.createElement("img");
   fullImage.onload = async function(){
@@ -132,7 +137,9 @@ async function liveScan(){
       document.getElementById("main").style.display = "";
       document.getElementById("camera-container").style.display = "none";
     }
+    decoding = false;
   };
+  decoding = true;
   fullImage.src = "data:image/jpeg;base64,"+result.value;
 }
 
