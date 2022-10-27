@@ -1,6 +1,6 @@
 import '../styles/index.scss';
-import { CameraPreview } from "@capacitor-community/camera-preview";
 import { Capacitor } from '@capacitor/core';
+import { CameraPreview } from "capacitor-plugin-dynamsoft-camera-preview";
 import { LabelRecognizer  } from "capacitor-plugin-dynamsoft-label-recognizer";
 
 console.log('webpack starterkit');
@@ -9,13 +9,12 @@ document.getElementsByClassName("start-camera")[0].addEventListener("click", sta
 document.getElementsByClassName("capture-button")[0].addEventListener("click", capture);
 document.getElementsByClassName("use-case")[0].addEventListener("change", changeUseCase);
 
-const leftPercent = 0.0;
-const widthPercent = 1.0;
-const topPercent = 0.35;
-const heightPercent = 0.15;
+const leftPercent = 0;
+const widthPercent = 100;
+const topPercent = 35;
+const heightPercent = 15;
 let interval;
 let decoding = false;
-
 let correctButton = document.getElementById("correctButton");
 correctButton.onclick = function(){
   var modal = document.getElementById("modal");
@@ -50,6 +49,17 @@ window.onload = async function(){
       document.getElementById("status").innerText = "";
     });
   }
+  await CameraPreview.initialize();
+  await CameraPreview.setScanRegion(
+    {region:
+      {
+       left: leftPercent,
+       top: topPercent,
+       right: leftPercent + widthPercent,
+       bottom: topPercent + heightPercent,
+       measuredByPercentage:1
+      }
+    });
   document.getElementById("main").style.display = "";
   document.getElementById("initilization-status").style.display = "none";
 };
@@ -107,21 +117,10 @@ function displayResults(results, cropped){
 async function startCamera(){
   document.getElementById("main").style.display = "none";
   document.getElementById("camera-container").style.display = "block";
-  let svg = document.getElementsByClassName("overlay")[0];
-  svg.innerHTML = "";
-  let options = {
-    toBack: true,
-    parent:"camera-container",
-    position:'rear'
-  };
-  if (Capacitor.isNativePlatform() === false) {
-    options.width = 1280;
-    options.height = 720;
-  }
-  await CameraPreview.start(options);
-  setTimeout(getPreviewSizeToUpdateOverlay,3000); //wait for the camera to open
+
+  await CameraPreview.startCamera();
   if (document.getElementById("livemode").checked) {
-    setTimeout(startLiveScan,4000);
+    startLiveScan();
   }
 }
 
@@ -141,20 +140,19 @@ async function liveScan(){
   if (document.getElementById("modal").className.indexOf("active") != -1) {
     return;
   }
-  const result = await CameraPreview.captureSample({});
-  let fullImage = document.createElement("img");
-  fullImage.onload = async function(){
-    let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
-    let results = await recognizeBase64String(cropped);
-    if (results.length>0) {
-      stopLiveScan();
-      displayResults(results, cropped);
-      displayConfirmationModal(results);
-    }
-    decoding = false;
-  };
+  let result;
+
+  result = await CameraPreview.takeSnapshot({quality:50});
+
+  let dataURL = "data:image/jpeg;base64,"+result.base64;
   decoding = true;
-  fullImage.src = "data:image/jpeg;base64,"+result.value;
+  let results = await recognizeBase64String(dataURL);
+  if (results.length>0) {
+    stopLiveScan();
+    displayResults(results, dataURL);
+    displayConfirmationModal(results);
+  }
+  decoding = false;
 }
 
 function displayConfirmationModal(results){
@@ -169,67 +167,21 @@ function displayConfirmationModal(results){
 }
 
 function stopWithLiveScanResults(){
-  CameraPreview.stop();
+  CameraPreview.stopCamera();
   document.getElementById("main").style.display = "";
   document.getElementById("camera-container").style.display = "none";
 }
 
 
 async function capture(){
-  const result = await CameraPreview.captureSample({});
-  let fullImage = document.createElement("img");
-  fullImage.onload = async function(){
-    let cropped = cropImage(fullImage,leftPercent,topPercent,widthPercent,heightPercent);
-    let img = document.getElementsByClassName("targetImg")[0];
-    img.src = cropped;
-    console.log(cropped);
-    CameraPreview.stop();
-    document.getElementById("main").style.display = "";
-    document.getElementById("camera-container").style.display = "none";
-    let results = await recognizeBase64String(cropped);
-    displayResults(results,cropped);
-  };
-  fullImage.src = "data:image/jpeg;base64,"+result.value;
-}
-
-function cropImage(img, left, top, width, height){
-  let canvas = document.createElement("canvas");
-  let ctx = canvas.getContext("2d");
-  let SX = img.naturalWidth * left;
-  let SY = img.naturalHeight * top;
-  let SWIDTH = img.naturalWidth * width;
-  let SHEIGHT = img.naturalHeight * height;
-  let DX = 0;
-  let DY = 0;
-  let DWIDTH = SWIDTH;
-  let DHEIGHT = SHEIGHT;
-  canvas.width = DWIDTH;
-  canvas.height = DHEIGHT;
-  console.log(canvas.width);
-  console.log(canvas.height);
-  ctx.drawImage(img, SX, SY, SWIDTH, SHEIGHT, DX, DY, DWIDTH, DHEIGHT); 
-  return canvas.toDataURL('image/jpeg');
-}
-
-async function getPreviewSizeToUpdateOverlay(){
-  const result = await CameraPreview.captureSample({});
-  let img = document.createElement("img");
-  img.onload = function (){
-    updateOverlay(img.naturalWidth,img.naturalHeight);
-  };
-  img.src = "data:image/jpeg;base64,"+result.value;
-}
-
-function updateOverlay(width,height){
-  let svg = document.getElementsByClassName("overlay")[0];
-  svg.innerHTML = "";
-  let rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-  rect.setAttribute("x",width*leftPercent);
-  rect.setAttribute("y",height*topPercent);
-  rect.setAttribute("width",width*widthPercent);
-  rect.setAttribute("height",height*heightPercent);
-  svg.setAttribute("viewBox","0 0 "+width+" "+height);
-  svg.appendChild(rect);
+  const result = await CameraPreview.takeSnapshot({quality:50});
+  let img = document.getElementsByClassName("targetImg")[0];
+  img.src = "data:image/jpeg;base64,"+result.base64;
+  await CameraPreview.stopCamera();
+  document.getElementById("main").style.display = "";
+  document.getElementById("camera-container").style.display = "none";
+  let results = await recognizeBase64String(img.src);
+  displayResults(results,img.src);
 }
 
 async function changeUseCase(event){
