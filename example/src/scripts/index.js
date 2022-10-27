@@ -142,16 +142,18 @@ async function liveScan(){
     return;
   }
   let result;
-
-  result = await CameraPreview.takeSnapshot({quality:50});
-
-  let dataURL = "data:image/jpeg;base64,"+result.base64;
-  decoding = true;
-  let results = await recognizeBase64String(dataURL);
-  if (results.length>0) {
-    stopLiveScan();
-    displayResults(results, dataURL);
-    displayConfirmationModal(results);
+  try {
+    result = await CameraPreview.takeSnapshot({quality:50});
+    let dataURL = "data:image/jpeg;base64,"+result.base64;
+    decoding = true;
+    let results = await recognizeBase64String(dataURL);
+    if (results.length>0) {
+      stopLiveScan();
+      displayResults(results, dataURL);
+      displayConfirmationModal(results);
+    }
+  } catch (error) {
+    console.log(error);
   }
   decoding = false;
 }
@@ -175,15 +177,19 @@ function stopWithLiveScanResults(){
 
 
 async function capture(){
-  const result = await CameraPreview.takeSnapshot({quality:50});
-  let dataURL = "data:image/jpeg;base64,"+result.base64;
-  let img = document.getElementsByClassName("targetImg")[0];
-  img.src = dataURL;
-  await CameraPreview.stopCamera();
-  document.getElementById("main").style.display = "";
-  document.getElementById("camera-container").style.display = "none";
-  let results = await recognizeBase64String(dataURL);
-  displayResults(results,dataURL);
+  try {
+    const result = await CameraPreview.takeSnapshot({quality:50});
+    let dataURL = "data:image/jpeg;base64,"+result.base64;
+    let img = document.getElementsByClassName("targetImg")[0];
+    img.src = dataURL;
+    await CameraPreview.stopCamera();
+    document.getElementById("main").style.display = "";
+    document.getElementById("camera-container").style.display = "none";
+    let results = await recognizeBase64String(dataURL);
+    displayResults(results,dataURL);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function changeUseCase(event){
