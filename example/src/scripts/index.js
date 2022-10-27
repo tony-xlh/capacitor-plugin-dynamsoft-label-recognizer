@@ -208,7 +208,7 @@ function regenerateDataURLWithCanvas(dataURL){
         let ctx = canvas.getContext("2d");
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
-        ctx.drawImage(img); 
+        ctx.drawImage(img,0,0); 
         resolve(canvas.toDataURL('image/jpeg'));
       };
       img.src = dataURL;  
