@@ -49,6 +49,7 @@ window.onload = async function(){
       document.getElementById("status").innerText = "";
     });
   }
+  await CameraPreview.requestCameraPermission();
   await CameraPreview.initialize();
   await CameraPreview.setScanRegion(
     {region:
@@ -175,13 +176,14 @@ function stopWithLiveScanResults(){
 
 async function capture(){
   const result = await CameraPreview.takeSnapshot({quality:50});
+  let dataURL = "data:image/jpeg;base64,"+result.base64;
   let img = document.getElementsByClassName("targetImg")[0];
-  img.src = "data:image/jpeg;base64,"+result.base64;
+  img.src = dataURL;
   await CameraPreview.stopCamera();
   document.getElementById("main").style.display = "";
   document.getElementById("camera-container").style.display = "none";
-  let results = await recognizeBase64String(img.src);
-  displayResults(results,img.src);
+  let results = await recognizeBase64String(dataURL);
+  displayResults(results,dataURL);
 }
 
 async function changeUseCase(event){
