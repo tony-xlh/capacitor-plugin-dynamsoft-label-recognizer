@@ -146,6 +146,9 @@ async function liveScan(){
     result = await CameraPreview.takeSnapshot({quality:50});
     let dataURL = "data:image/jpeg;base64,"+result.base64;
     decoding = true;
+    if (Capacitor.getPlatform() === "ios") {
+      dataURL = await regenerateDataURLWithCanvas(dataURL);
+    }
     let results = await recognizeBase64String(dataURL);
     if (results.length>0) {
       stopLiveScan();
@@ -185,11 +188,34 @@ async function capture(){
     await CameraPreview.stopCamera();
     document.getElementById("main").style.display = "";
     document.getElementById("camera-container").style.display = "none";
+    if (Capacitor.getPlatform() === "ios") {
+      dataURL = await regenerateDataURLWithCanvas(dataURL);
+    }
     let results = await recognizeBase64String(dataURL);
     displayResults(results,dataURL);
   } catch (error) {
     console.log(error);
   }
+}
+
+function regenerateDataURLWithCanvas(dataURL){
+  console.log("regenerate DataURL");
+  return new Promise(function (resolve, reject) {
+    try {
+      let img = document.createElement("img");
+      img.onload = function() {
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img); 
+        resolve(canvas.toDataURL('image/jpeg'));
+      };
+      img.src = dataURL;  
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 async function changeUseCase(event){
