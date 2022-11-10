@@ -146,9 +146,9 @@ async function liveScan(){
     result = await CameraPreview.takeSnapshot({quality:50});
     let dataURL = "data:image/jpeg;base64,"+result.base64;
     decoding = true;
-    if (Capacitor.getPlatform() === "ios") {
-      dataURL = await regenerateDataURLWithCanvas(dataURL);
-    }
+    //if (Capacitor.getPlatform() === "ios") {
+    //  dataURL = await regenerateDataURLWithCanvas(dataURL);
+    //}
     let results = await recognizeBase64String(dataURL);
     if (results.length>0) {
       stopLiveScan();

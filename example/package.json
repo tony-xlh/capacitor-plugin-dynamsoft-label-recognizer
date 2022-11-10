@@ -62,7 +62,7 @@
     "@capacitor/cli": "^4.3.0",
     "@capacitor/core": "^4.3.0",
     "@capacitor/ios": "^4.3.0",
-    "capacitor-plugin-dynamsoft-camera-preview": "^1.0.1",
+    "capacitor-plugin-dynamsoft-camera-preview": "^1.1.0",
     "capacitor-plugin-dynamsoft-label-recognizer": "file:..",
     "core-js": "^3.20.3"
   }
