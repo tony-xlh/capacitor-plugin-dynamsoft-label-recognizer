@@ -1,6 +1,6 @@
 {
   "name": "capacitor-plugin-dynamsoft-label-recognizer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Capacitor plugin of Dynamsoft Label Recognizer which brings text recognition ability to your apps.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
