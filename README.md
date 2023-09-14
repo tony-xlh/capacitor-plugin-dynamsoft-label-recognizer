@@ -2,6 +2,12 @@
 
 Capacitor plugin of [Dynamsoft Label Recognizer](https://www.dynamsoft.com/label-recognition/overview/) which brings text recognition ability to your apps.
 
+## Versions
+
+For Capacitor v5, use v1.x.
+
+For Capacitor v4, use v0.x.
+
 ## Install
 
 ```bash
