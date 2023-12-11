@@ -33,6 +33,10 @@ public class LabelRecognizerPlugin: CAPPlugin  {
         call.resolve(["results":implementation.recognizeBase64String(base64)])
     }
     
+    @objc func recognizeBitmap(_ call: CAPPluginCall) {
+        call.resolve(["results":implementation.recognizeBitmap()])
+    }
+    
     func removeDataURLHead(_ str: String) -> String {
         var finalStr = str
         do {
