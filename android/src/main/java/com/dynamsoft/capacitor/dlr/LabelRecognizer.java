@@ -16,6 +16,8 @@ import com.getcapacitor.JSObject;
 import org.json.JSONArray;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class LabelRecognizer {
 
@@ -48,6 +50,20 @@ public class LabelRecognizer {
         JSArray array = new JSArray();
         for (DLRResult result:results) {
             array.put(Utils.getMapFromDLRResult(result));
+        }
+        return array;
+    }
+
+    public JSArray recognizeBitmap() throws LabelRecognizerException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, ClassNotFoundException {
+        Class cls = Class.forName("com.dynamsoft.capacitor.dce.CameraPreviewPlugin");
+        Method m = cls.getMethod("getBitmap",null);
+        Bitmap bitmap = (Bitmap) m.invoke(null, null);
+        JSArray array = new JSArray();
+        if (bitmap != null) {
+            DLRResult[] results = recognizer.recognizeImage(bitmap);
+            for (DLRResult result:results) {
+                array.put(Utils.getMapFromDLRResult(result));
+            }
         }
         return array;
     }

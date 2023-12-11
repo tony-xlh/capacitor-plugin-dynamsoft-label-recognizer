@@ -14,6 +14,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.InvocationTargetException;
+
 @CapacitorPlugin(name = "LabelRecognizer")
 public class LabelRecognizerPlugin extends Plugin {
 
@@ -56,6 +58,20 @@ public class LabelRecognizerPlugin extends Plugin {
             response.put("results",results);
             call.resolve(response);
         } catch (LabelRecognizerException e) {
+            e.printStackTrace();
+            call.reject(e.getMessage());
+        }
+    }
+
+    @PluginMethod
+    public void recognizeBitmap(PluginCall call) {
+        try {
+            JSArray results = implementation.recognizeBitmap();
+            JSObject response = new JSObject();
+            response.put("results",results);
+            call.resolve(response);
+        } catch (LabelRecognizerException | InvocationTargetException | IllegalAccessException |
+                 NoSuchMethodException | ClassNotFoundException e) {
             e.printStackTrace();
             call.reject(e.getMessage());
         }
