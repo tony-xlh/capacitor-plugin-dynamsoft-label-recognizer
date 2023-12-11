@@ -22,7 +22,8 @@ install! 'cocoapods', :disable_input_output_paths => true
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
-
+  pod 'CapacitorPluginDynamsoftCameraPreview', :path => '../../node_modules/capacitor-plugin-dynamsoft-camera-preview'
+  pod 'CapacitorPluginDynamsoftLabelRecognizer', :path => '../../..'
 end
 
 target 'App' do

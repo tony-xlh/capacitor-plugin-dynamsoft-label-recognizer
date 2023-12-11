@@ -44,7 +44,7 @@
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.5.1",
-    "node-sass": "^7.0.1",
+    "node-sass": "^9.0.0",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.2.3",
     "sass-loader": "^12.4.0",
@@ -62,7 +62,7 @@
     "@capacitor/android": "^5.0.0",
     "@capacitor/core": "^5.0.0",
     "@capacitor/ios": "^5.0.0",
-    "capacitor-plugin-dynamsoft-camera-preview": "^2.0.0",
+    "capacitor-plugin-dynamsoft-camera-preview": "^2.1.0",
     "capacitor-plugin-dynamsoft-label-recognizer": "file:..",
     "core-js": "^3.20.3"
   }

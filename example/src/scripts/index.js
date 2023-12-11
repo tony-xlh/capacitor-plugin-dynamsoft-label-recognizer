@@ -142,18 +142,22 @@ async function liveScan(){
     return;
   }
   let results = [];
+  let dataURL;
   decoding = true;
   try {
     if (Capacitor.isNativePlatform()) {
-      results = await LabelRecognizer.recognizeBitmap();
+      results = (await LabelRecognizer.recognizeBitmap()).results;
     }else{
       let frame = await CameraPreview.takeSnapshot({quality:50});
-      let dataURL = "data:image/jpeg;base64,"+frame.base64;
+      dataURL = "data:image/jpeg;base64,"+frame.base64;
       results = await recognizeBase64String(dataURL);
     }
 
     if (results.length>0) {
       stopLiveScan();
+      if (Capacitor.isNativePlatform()) {
+        dataURL = "data:image/jpeg;base64,"+(await CameraPreview.takeSnapshot({quality:50})).base64;
+      }
       displayResults(results, dataURL);
       displayConfirmationModal(results);
     }
