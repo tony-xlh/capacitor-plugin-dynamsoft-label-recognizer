@@ -141,15 +141,17 @@ async function liveScan(){
   if (document.getElementById("modal").className.indexOf("active") != -1) {
     return;
   }
-  let result;
+  let results = [];
+  decoding = true;
   try {
-    result = await CameraPreview.takeSnapshot({quality:50});
-    let dataURL = "data:image/jpeg;base64,"+result.base64;
-    decoding = true;
-    //if (Capacitor.getPlatform() === "ios") {
-    //  dataURL = await regenerateDataURLWithCanvas(dataURL);
-    //}
-    let results = await recognizeBase64String(dataURL);
+    if (Capacitor.isNativePlatform()) {
+      results = await LabelRecognizer.recognizeBitmap();
+    }else{
+      let frame = await CameraPreview.takeSnapshot({quality:50});
+      let dataURL = "data:image/jpeg;base64,"+frame.base64;
+      results = await recognizeBase64String(dataURL);
+    }
+
     if (results.length>0) {
       stopLiveScan();
       displayResults(results, dataURL);
