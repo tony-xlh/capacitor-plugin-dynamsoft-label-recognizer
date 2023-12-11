@@ -26,6 +26,7 @@ npx cap sync
 * [`initialize()`](#initialize)
 * [`initLicense(...)`](#initlicense)
 * [`recognizeBase64String(...)`](#recognizebase64string)
+* [`recognizeBitmap()`](#recognizebitmap)
 * [`updateRuntimeSettings(...)`](#updateruntimesettings)
 * [`resetRuntimeSettings()`](#resetruntimesettings)
 * [`setEngineResourcesPath(...)`](#setengineresourcespath)
@@ -71,6 +72,19 @@ recognizeBase64String(options: { base64: string; }) => Promise<{ results: DLRRes
 | Param         | Type                             |
 | ------------- | -------------------------------- |
 | **`options`** | <code>{ base64: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ results: DLRResult[]; }&gt;</code>
+
+--------------------
+
+
+### recognizeBitmap()
+
+```typescript
+recognizeBitmap() => Promise<{ results: DLRResult[]; }>
+```
+
+Android and iOS only method which directly read camera frames from capacitor-plugin-dynamsoft-camera-preview
 
 **Returns:** <code>Promise&lt;{ results: DLRResult[]; }&gt;</code>
 

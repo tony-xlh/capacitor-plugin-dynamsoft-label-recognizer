@@ -53,6 +53,10 @@ export class LabelRecognizerWeb extends WebPlugin implements LabelRecognizerPlug
     }
   }
 
+  recognizeBitmap(): Promise<{ results: DLRResult[]; }> {
+    throw new Error('Method not implemented.');
+  }
+
   setupEvents() {
     LabelRecognizer.onResourcesLoadStarted = (resourcePath) => {
         // In this event handler, you can display a visual cue to show that the model file is being downloaded.
