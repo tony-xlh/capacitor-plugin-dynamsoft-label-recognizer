@@ -8,6 +8,12 @@ For Capacitor v5, use v1.x.
 
 For Capacitor v4, use v0.x.
 
+## SDK Versions Used for Different Platforms
+
+| Product      | Android |    iOS  | Web |
+| ----------- | ----------- | -----------  | -----------  |
+| Dynamsoft Label Recognizer    | 2.x       | 2.x     | 2.x |
+
 ## Install
 
 ```bash
