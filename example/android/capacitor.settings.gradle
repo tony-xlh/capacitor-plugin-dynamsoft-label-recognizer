@@ -2,8 +2,8 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':capacitor-plugin-dynamsoft-camera-preview'
-project(':capacitor-plugin-dynamsoft-camera-preview').projectDir = new File('../node_modules/capacitor-plugin-dynamsoft-camera-preview/android')
+include ':capacitor-plugin-camera'
+project(':capacitor-plugin-camera').projectDir = new File('../node_modules/capacitor-plugin-camera/android')
 
 include ':capacitor-plugin-dynamsoft-label-recognizer'
 project(':capacitor-plugin-dynamsoft-label-recognizer').projectDir = new File('../../android')

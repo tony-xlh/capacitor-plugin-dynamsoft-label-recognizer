@@ -9,7 +9,7 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':capacitor-plugin-dynamsoft-camera-preview')
+    implementation project(':capacitor-plugin-camera')
     implementation project(':capacitor-plugin-dynamsoft-label-recognizer')
 
 }

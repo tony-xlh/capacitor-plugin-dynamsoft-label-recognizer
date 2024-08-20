@@ -1,6 +1,6 @@
 import '../styles/index.scss';
 import { Capacitor } from '@capacitor/core';
-import { CameraPreview } from "capacitor-plugin-dynamsoft-camera-preview";
+import { CameraPreview } from "capacitor-plugin-camera";
 import { LabelRecognizer  } from "capacitor-plugin-dynamsoft-label-recognizer";
 
 console.log('webpack starterkit');
@@ -13,6 +13,8 @@ const leftPercent = 0;
 const widthPercent = 100;
 const topPercent = 35;
 const heightPercent = 15;
+let onPlayedListener;
+let onOrientationChangedListener;
 let interval;
 let decoding = false;
 let correctButton = document.getElementById("correctButton");
@@ -49,6 +51,21 @@ window.onload = async function(){
       document.getElementById("status").innerText = "";
     });
   }
+  if (onPlayedListener) {
+    await onPlayedListener.remove();
+  }
+  if (onOrientationChangedListener) {
+    await onOrientationChangedListener.remove();
+  }
+  onPlayedListener = await CameraPreview.addListener('onPlayed', async (res) => {
+    console.log("onPlayed");
+    console.log(res);
+    updateViewfinder(res.resolution);
+  });
+  onOrientationChangedListener = await CameraPreview.addListener('onOrientationChanged',async () => {
+    console.log("onOrientationChanged");
+    setTimeout(updateViewfinder,500);
+  });
   await CameraPreview.requestCameraPermission();
   await CameraPreview.initialize();
   await CameraPreview.setScanRegion(
@@ -87,10 +104,16 @@ function decodeImage(){
 
 async function recognizeBase64String(base64){
   document.getElementById("status").innerText = "decoding...";
-  let response = await LabelRecognizer.recognizeBase64String({base64:base64});
-  document.getElementById("status").innerText = "";
-  let results = response.results;
-  return results;
+  try {
+    let response = await LabelRecognizer.recognizeBase64String({base64:base64});
+    document.getElementById("status").innerText = "";
+    let results = response.results;
+    return results;
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
+  return [];
 }
 
 function displayResults(results, cropped){
@@ -146,7 +169,8 @@ async function liveScan(){
   decoding = true;
   try {
     if (Capacitor.isNativePlatform()) {
-      results = (await LabelRecognizer.recognizeBitmap()).results;
+      await CameraPreview.saveFrame();
+      results = (await LabelRecognizer.recognizeBitmap({})).results;
     }else{
       let frame = await CameraPreview.takeSnapshot({quality:50});
       dataURL = "data:image/jpeg;base64,"+frame.base64;
@@ -187,6 +211,7 @@ function stopWithLiveScanResults(){
 
 async function capture(){
   try {
+    stopLiveScan();
     const result = await CameraPreview.takeSnapshot({quality:50});
     let dataURL = "data:image/jpeg;base64,"+result.base64;
     let img = document.getElementsByClassName("targetImg")[0];
@@ -250,4 +275,26 @@ async function loadMRZSettings(){
       }
     );
   }
+}
+
+async function updateViewfinder(res){
+  if (!res) {
+    res = (await CameraPreview.getResolution()).resolution;
+  }
+  let width = res.split("x")[0];
+  let height = res.split("x")[1];
+  if (Capacitor.isNativePlatform()) {
+    let orientation = (await CameraPreview.getOrientation()).orientation;
+    if (orientation === "PORTRAIT") {
+      width = res.split("x")[1];
+      height = res.split("x")[0];
+    }
+  }
+  let viewFinder = document.querySelector("view-finder");
+  viewFinder.width = width;
+  viewFinder.height = height;
+  viewFinder.left = width * leftPercent/100;
+  viewFinder.top = height * topPercent/100;
+  viewFinder.right = width * (leftPercent+widthPercent)/100;
+  viewFinder.bottom = height * (topPercent+heightPercent)/100;
 }
