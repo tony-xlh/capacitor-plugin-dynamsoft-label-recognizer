@@ -34,7 +34,9 @@ public class LabelRecognizerPlugin: CAPPlugin  {
     }
     
     @objc func recognizeBitmap(_ call: CAPPluginCall) {
-        call.resolve(["results":implementation.recognizeBitmap()])
+        let className = call.getString("className") ?? "CameraPreviewPlugin"
+        let methodName = call.getString("methodName") ?? "getBitmap"
+        call.resolve(["results":implementation.recognizeBitmap(className,methodName)])
     }
     
     func removeDataURLHead(_ str: String) -> String {

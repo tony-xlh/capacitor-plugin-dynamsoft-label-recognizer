@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 #import <objc/message.h>
 @interface Interoperator : NSObject
-- (UIImage*)getUIImage;
+- (UIImage*)getUIImage: (NSString *)className methodName: (NSString *)methodName;
 @end

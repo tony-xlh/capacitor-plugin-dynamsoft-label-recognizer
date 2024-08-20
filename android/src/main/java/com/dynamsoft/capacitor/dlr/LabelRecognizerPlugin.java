@@ -66,7 +66,9 @@ public class LabelRecognizerPlugin extends Plugin {
     @PluginMethod
     public void recognizeBitmap(PluginCall call) {
         try {
-            JSArray results = implementation.recognizeBitmap();
+            String className = call.getString("className","com.tonyxlh.capacitor.camera.CameraPreviewPlugin");
+            String methodName = call.getString("methodName","getBitmap");
+            JSArray results = implementation.recognizeBitmap(className,methodName);
             JSObject response = new JSObject();
             response.put("results",results);
             call.resolve(response);

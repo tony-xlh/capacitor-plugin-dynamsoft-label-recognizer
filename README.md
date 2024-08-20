@@ -32,7 +32,7 @@ npx cap sync
 * [`initialize()`](#initialize)
 * [`initLicense(...)`](#initlicense)
 * [`recognizeBase64String(...)`](#recognizebase64string)
-* [`recognizeBitmap()`](#recognizebitmap)
+* [`recognizeBitmap(...)`](#recognizebitmap)
 * [`updateRuntimeSettings(...)`](#updateruntimesettings)
 * [`resetRuntimeSettings()`](#resetruntimesettings)
 * [`setEngineResourcesPath(...)`](#setengineresourcespath)
@@ -84,13 +84,17 @@ recognizeBase64String(options: { base64: string; }) => Promise<{ results: DLRRes
 --------------------
 
 
-### recognizeBitmap()
+### recognizeBitmap(...)
 
 ```typescript
-recognizeBitmap() => Promise<{ results: DLRResult[]; }>
+recognizeBitmap(options: { className?: string; methodName?: string; }) => Promise<{ results: DLRResult[]; }>
 ```
 
-Android and iOS only method which directly read camera frames from capacitor-plugin-dynamsoft-camera-preview
+Android and iOS only method which directly read camera frames from capacitor-plugin-camera
+
+| Param         | Type                                                      |
+| ------------- | --------------------------------------------------------- |
+| **`options`** | <code>{ className?: string; methodName?: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ results: DLRResult[]; }&gt;</code>
 
@@ -135,7 +139,7 @@ setEngineResourcesPath(options: { path: string; }) => Promise<void>
 ### addListener('onResourcesLoadStarted', ...)
 
 ```typescript
-addListener(eventName: 'onResourcesLoadStarted', listenerFunc: onResourcesLoadStartedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'onResourcesLoadStarted', listenerFunc: onResourcesLoadStartedListener) => Promise<PluginListenerHandle>
 ```
 
 | Param              | Type                                                                                      |
@@ -143,7 +147,7 @@ addListener(eventName: 'onResourcesLoadStarted', listenerFunc: onResourcesLoadSt
 | **`eventName`**    | <code>'onResourcesLoadStarted'</code>                                                     |
 | **`listenerFunc`** | <code><a href="#onresourcesloadstartedlistener">onResourcesLoadStartedListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
 
@@ -151,7 +155,7 @@ addListener(eventName: 'onResourcesLoadStarted', listenerFunc: onResourcesLoadSt
 ### addListener('onResourcesLoaded', ...)
 
 ```typescript
-addListener(eventName: 'onResourcesLoaded', listenerFunc: onResourcesLoadedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'onResourcesLoaded', listenerFunc: onResourcesLoadedListener) => Promise<PluginListenerHandle>
 ```
 
 | Param              | Type                                                                            |
@@ -159,7 +163,7 @@ addListener(eventName: 'onResourcesLoaded', listenerFunc: onResourcesLoadedListe
 | **`eventName`**    | <code>'onResourcesLoaded'</code>                                                |
 | **`listenerFunc`** | <code><a href="#onresourcesloadedlistener">onResourcesLoadedListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
 

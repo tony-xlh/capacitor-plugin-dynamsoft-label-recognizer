@@ -10,8 +10,10 @@
 
 @implementation Interoperator
 
-- (UIImage*)getUIImage{
-    UIImage *image = ((UIImage* (*)(id, SEL))objc_msgSend)(objc_getClass("CameraPreviewPlugin"), sel_registerName("getBitmap"));
+- (UIImage*)getUIImage: (NSString *)className methodName: (NSString *)methodName;{
+    const char * classNameChar = [className cStringUsingEncoding:NSUTF8StringEncoding];
+    const char * methodNameChar = [methodName cStringUsingEncoding:NSUTF8StringEncoding];
+    UIImage *image = ((UIImage* (*)(id, SEL))objc_msgSend)(objc_getClass(classNameChar), sel_registerName(methodNameChar));
     return image;
 }
 

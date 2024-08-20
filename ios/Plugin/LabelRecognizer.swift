@@ -34,10 +34,10 @@ import DynamsoftLabelRecognizer
         return returned_results
     }
     
-    @objc public func recognizeBitmap() -> [Any] {
+    @objc public func recognizeBitmap(_ className: String, _ methodName: String) -> [Any] {
         var returned_results: [Any] = []
         let interop = Interoperator()
-        let image = interop.getUIImage()
+        let image = interop.getUIImage(className,methodName: methodName)
         if image != nil {
             let results = try? recognizer.recognizeImage(image!)
             for result in results! {
