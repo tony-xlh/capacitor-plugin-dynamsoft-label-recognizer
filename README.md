@@ -4,6 +4,8 @@ Capacitor plugin of [Dynamsoft Label Recognizer](https://www.dynamsoft.com/label
 
 ## Versions
 
+For Capacitor v6, use v2.x.
+
 For Capacitor v5, use v1.x.
 
 For Capacitor v4, use v0.x.
