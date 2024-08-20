@@ -15,11 +15,11 @@ export interface LabelRecognizerPlugin {
   addListener(
     eventName: 'onResourcesLoadStarted',
     listenerFunc: onResourcesLoadStartedListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
   addListener(
     eventName: 'onResourcesLoaded',
     listenerFunc: onResourcesLoadedListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
   removeAllListeners(): Promise<void>;
 }
 
